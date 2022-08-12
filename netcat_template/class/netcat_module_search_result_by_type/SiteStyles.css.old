@@ -1,0 +1,149 @@
+/**********************************************************************************************************************/
+.group {
+    margin-top: 30px;
+}
+.group-title {
+    font-size: 1rem;
+    font-family: var(--tpl-font-family-subtitle);
+    font-style: italic;
+    color: var(--tpl-color-foreground-main);
+    font-weight: bold;
+}
+.suggestion.good .title {
+    text-align: center;
+    font-size: 11px;
+    line-height: 13px;
+    padding-top: 22px;
+    font-weight: 700;
+    font-family: var(--tpl-font-family-title);
+}
+.suggestion.good .subtitle {
+    text-align: center;
+    font-size: 9px;
+    line-height: 13px;
+    padding-top: 3px;
+    font-family: var(--tpl-font-family-text);
+}
+.suggestion.good .body {
+    text-align: center;
+    font-size: 11px;
+    line-height: 18px;
+    padding-top: 7px;
+    font-style: italic;
+    font-family: var(--tpl-font-family-subtitle);
+}
+.suggestion.category .body,
+.suggestion.other .body {
+    font-size: 11px;
+    line-height: 18px;
+    font-style: italic;
+    font-family: var(--tpl-font-family-subtitle);
+}
+.suggestion.good:hover .title {
+    color: var(--tpl-color-brand);
+}
+.grid-goods {
+    display: grid;
+    grid-template-columns: 49% 49%;
+    grid-gap: 10px;
+    margin-top: 20px;
+}
+.suggestion.category .title {
+    text-align: left;
+}
+.suggestion.category .body {
+    text-align: left;
+}
+.suggestion.category .link,
+.suggestion.other .link {
+    display: inline-block;
+    text-decoration: underline;
+}
+.link + .link {
+    margin-top: 5px;
+}
+.suggestion.category .link:hover,
+.suggestion.other .link:hover {
+    color: var(--tpl-color-brand);
+    border-color: var(--tpl-color-brand);
+}
+.grid-others {
+    display: grid;
+    grid-template-columns: 49% 49%;
+    grid-gap: 10px;
+}
+.grid-categories-item,
+.grid-others-item {
+    margin-top: 10px;
+}
+
+@media (min-width: 500px) {
+    .group-title {
+        font-size: 17px;
+    }
+    .suggestion.good .title {
+        font-size: 16px;
+        line-height: 18px;
+    }
+    .suggestion.good .subtitle {
+        font-size: 13px;
+        line-height: 18px;
+    }
+    .suggestion.good .body {
+        font-size: 16px;
+        line-height: 23px;
+    }
+    .suggestion.category .body {
+        font-size: 14px;
+        line-height: 23px;
+    }
+}
+
+@media (min-width: 600px) {
+    .grid-goods {
+        grid-template-columns: 24% 25% 25% 24%;
+    }
+}
+
+@media (min-width: 750px) {
+    .group-title {
+        font-size: 20px;
+        line-height: 25px;
+    }
+    .suggestion.good .title {
+        font-size: 19px;
+        line-height: 21px;
+    }
+    .suggestion.good .subtitle {
+        font-size: 16px;
+        line-height: 21px;
+    }
+    .suggestion.good .body {
+        font-size: 19px;
+        line-height: 26px;
+    }
+    .suggestion.category .body {
+        font-size: 16px;
+        line-height: 25px;
+    }
+    .suggestion.other .title {
+        font-size: 22px;
+        line-height: 29px;
+    }
+    .suggestion.other .body {
+        font-size: 17px;
+        line-height: 24px;
+    }
+}
+
+@media (min-width: 1100px) {
+    .grid-others {
+        grid-template-columns: 24% 25% 25% 24%;
+    }
+}
+
+@media (min-width: 1421px) {
+    .grid-goods {
+        grid-template-columns: 19% 20% 20% 20% 19%;
+    }
+}

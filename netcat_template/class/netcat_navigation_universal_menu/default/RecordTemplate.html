@@ -1,0 +1,59 @@
+<?/* Служебная часть */for ($f_RowNum = 0; $f_RowNum < $rowCount; $f_RowNum++) {    if($fetch_row[$f_RowNum] instanceof Iterator) {        extract($fetch_row[$f_RowNum]->to_array(), EXTR_PREFIX_ALL, "f");    } else {        extract($fetch_row[$f_RowNum], EXTR_PREFIX_ALL, "f");    }    foreach($iteration_RecordTemplate[$f_RowNum] as $value) {        extract($value);    }    eval($cc_env["convert2txt"]);    ob_start();/* Конец служебной части */?>
+<?php
+if ($menu_is_custom) {
+    // Для вручную отобранных ссылок нужно установить $f_current, $f_active
+    $f_current = $f_Subdivision_ID == $sub;
+    $f_active = $f_current || $nc_core->subdivision->is_parent_of($sub, $f_Subdivision_ID);
+}
+
+$sub_menu = null;
+if ($make_submenu) {
+    if ((!$menu_submenu_settings[$menu_level - 1]['only_active'] || $f_active)) {
+        $sub_menu = $make_submenu($f_Subdivision_ID);
+    }
+}
+
+$classes = "menu-item menu-item-layout-$cc_settings[item_layout]";
+if ($sub_menu) {
+    $classes .= ' menu-item-with-submenu';
+}
+
+if ($admin_mode) {
+    $href = $nc_core->SUB_FOLDER . $nc_core->HTTP_ROOT_PATH . '?catalogue=' . $catalogue . '&sub=' . $f_Subdivision_ID;
+} else {
+    $href = nc_folder_path($f_Subdivision_ID);
+}
+
+if ($f_active) {
+    $classes .= ' menu-item-active';
+}
+if ($f_current) {
+    $classes .= ' menu-item-current';
+}
+
+if ((string)$href === $current_subdivision_path) {
+    $href = null;
+}
+//dump($f_icon);
+if (in_array($cc_settings['item_layout'], array('icon', 'nameicon', 'nameiconvertical'))) {
+    if ($f_icon == '') {
+        // icon/google_material_icons/folder-open.svg
+        $icon = '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" class="menu-item-icon tpl-icon">' .
+                '<path d="M40 12H24l-4-4H8c-2.21 0-3.98 1.79-3.98 4L4 36c0 2.21 1.79 4 4 4h32c2.21 0 4-1.79 4-4V16c0-2.21-1.79-4-4-4zm0 24H8V16h32v20z"/>' .
+                '</svg>';
+    } else {
+        $icon = "<span class='icon'>".nc_embed_icon('Subdivision', $f_Subdivision_ID, 'icon', array('class' => 'menu-item-icon'))."</span>";
+    }
+}
+if (in_array($cc_settings['item_layout'], array('name', 'nameicon', 'nameiconvertical'))) {
+    $name = "<span class=' tpl-text-{$cc_settings['item_font']}'>$f_Subdivision_Name</span>";
+} else {
+    $name = '';
+}
+?>
+<li class="<?= $classes ?>" title="<?= htmlspecialchars($f_Subdivision_Name); ?>">
+    <?= $f_AdminButtons; ?>
+    <?= $href ? '<a href="' . $href . '" >' : '' ?><?= $icon; ?> <?= $name; ?><?= $href ? '</a>' : '' ?>
+    <?= $sub_menu ?>
+</li>
+<?/* Служебная часть */    echo nc_finishing_RecordTemplate(ob_get_clean(), $inside_admin, $classID, $f_RowID, $parent_message, $cc, $cc_env["Class_Name"], $no_cache_marks);}/* Конец служебной части */?>

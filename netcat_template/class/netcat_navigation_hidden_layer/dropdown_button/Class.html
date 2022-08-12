@@ -1,0 +1,92 @@
+<!-- FormPrefix --><?= $f_AdminCommon; ?>
+<div class="dropdown-button">
+    <?php if (empty($cc_settings['icon']) && empty($cc_settings['text'])): ?>
+        <span class="dropdown-button-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"
+            width="<?= nc_array_value($cc_settings, 'icon_max_width', 24) ?>"
+            height="<?= nc_array_value($cc_settings, 'icon_max_width', 24) ?>">
+                <path d="M6 36h36v-4H6v4zm0-10h36v-4H6v4zm0-14v4h36v-4H6z" />
+            </svg>
+        </span>
+    <?php endif; ?>
+    <?php if (!empty($cc_settings['icon'])): ?>
+        <span class="dropdown-button-icon">
+            <?= $cc_settings['icon']->as_img(array(
+                'title' => $cc_settings['icon_title'],
+                'style' => 'max-width: ' . nc_array_value($cc_settings, 'icon_max_width', 24) . 'px; ' .
+                           'max-height: ' . nc_array_value($cc_settings, 'icon_max_height', 24) . 'px',
+            )); ?>
+        </span>
+    <?php endif; ?>
+    <?php if (!empty($cc_settings['text'])): ?>
+        <span class="dropdown-button-text tpl-text-default"><?= $cc_settings['text'] ?></span>
+    <?php endif; ?>
+</div>
+<?php // блок будет перемещён в body, поэтому стили вшиты атрибутом: ?>
+<div class="dropdown-menu" style="display: none; position: absolute; background: var(--tpl-color-background-main, #FFF); z-index: 2000">
+    <?= nc_area('netcat_block_hidden_layer_' . $cc); ?>
+</div>
+<!-- /FormPrefix -->
+
+<!-- RecordTemplate --><!-- /RecordTemplate -->
+
+<!-- FormSuffix --><script>
+document.addEventListener('DOMContentLoaded', function() {
+    var body = $('body'),
+        container = $('#<?= $nc_block_id ?>'),
+        admin_container = container.closest('.tpl-block-<?= $cc ?>'),
+        menu = container.find('.dropdown-menu').appendTo('body'),
+        body_margin_top = parseFloat(body.css('margin-top'));
+
+    function show() {
+        if (menu.is(':visible')) {
+            return;
+        }
+
+        menu.css({ top: 0, left: 0 })
+            .position({
+                my: 'left top',
+                at: 'left bottom-' + body_margin_top,
+                of: admin_container
+            })
+            .fadeToggle();
+
+        setTimeout(function() {
+            body.on('click.<?= $nc_block_id ?>', hide_on_click);
+        }, 100);
+    }
+
+    function hide() {
+        menu.fadeOut();
+        body.off('click.<?= $nc_block_id ?>');
+    }
+
+    function hide_on_click(event) {
+        if (!$(event.target).closest(menu).length) {
+            hide();
+        }
+    }
+
+    function is_nc_event(event) {
+        return !!$(event.target).closest('.nc-infoblock-toolbar').length;
+    }
+
+    // открытие по нажатию/тачу
+    admin_container.on('click', function(event) {
+        !is_nc_event(event) && show();
+    });
+
+    // открытие по наведению
+    <?php if ($cc_settings['menu_display'] === 'hover'): ?>
+    var hide_timeout;
+    admin_container.add(menu).on('mouseover', function(event) {
+        clearTimeout(hide_timeout);
+        !is_nc_event(event) && show();
+    }).on('mouseout', function() {
+        hide_timeout = setTimeout(hide, 500);
+    });
+    <?php endif; ?>
+
+});
+</script>
+<!-- /FormSuffix -->

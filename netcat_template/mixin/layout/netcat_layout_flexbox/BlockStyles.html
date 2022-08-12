@@ -1,0 +1,96 @@
+<?php
+
+/** @var string $selector */
+/** @var string $list_selector */
+/** @var array $settings */
+
+$flex_direction = $settings['flexbox_direction'];
+$justify_content = $settings['flexbox_justify'];
+$align_items = $settings['flexbox_align'];
+$wrap = $settings['flexbox_wrap'] === 'wrap';
+
+$rules = array();
+$rules[$list_selector] = array(
+    "display: flex",
+    "flex-direction: $flex_direction",
+    "flex-wrap: $settings[flexbox_wrap]",
+    "align-items: $align_items",
+);
+
+$item_selector = "$list_selector > *";
+
+$v_spacing = ($wrap || $flex_direction === 'column')
+    ? (int)nc_array_value($settings, 'vertical_spacing', 0)
+    : false;
+$h_spacing = ($wrap || $flex_direction === 'row')
+    ? (int)nc_array_value($settings, 'horizontal_spacing', 0)
+    : false;
+
+// Отступы между элементами:
+// для однострочного флекса убираем отступ у первого элемента
+// (чтобы минимизировать конфликт со стилями шаблона компонента для блока списка);
+// для многострочного — используем отрицательный отступ
+if ($v_spacing) {
+    $rules[$item_selector][] = "margin-bottom: {$v_spacing}px";
+    if ($wrap) {
+        $rules[$list_selector][] = "margin-bottom: -{$v_spacing}px";
+    } else {
+        $rules["$item_selector:last-child"][] = "margin-bottom: 0";
+    }
+}
+
+if ($h_spacing) {
+    $rules[$item_selector][] = "margin-right: {$h_spacing}px";
+    if ($wrap) {
+        $rules[$list_selector][] = "margin-right: -{$h_spacing}px";
+        // растягиваем по ширине (!important из-за стандартного стиля для блоков списков
+        // с более высоким приоритетом)
+        $rules[$list_selector][] = "width: calc(100% + {$h_spacing}px) !important";
+    } else {
+        $rules["$item_selector:last-child"][] = "margin-right: 0";
+    }
+}
+
+if ($v_spacing || $h_spacing) {
+    // предотвращение склеивания margin’ов в режиме просмотра:
+    // NB:  ↓↓↓↓  CSS Element Queries не понимает селектор вида .x[max-width~="123px"]:not(.y), поэтому :not() в начале
+    $rules[":not(.nc-container):not(.nc-infoblock)$selector"][] = "overflow: hidden";
+}
+
+if ($justify_content === 'stretch') {
+    // 'stretch' не является валидным значением для justify-content
+    $rules[$item_selector][] = "flex-grow: 1";
+    $rules[$list_selector][] = "justify-content: center";
+} else {
+    $rules[$list_selector][] = "justify-content: $justify_content";
+}
+
+$has_height = false;
+foreach (array('min-height', 'height', 'max-height') as $height_property) {
+    $settings_key = 'list_' . strtr($height_property, '-', '_');
+    if (!empty($settings[$settings_key])) {
+        $value = $settings[$settings_key] . $settings[$settings_key . '_unit'];
+        $rules[$list_selector][] = "$height_property: $value";
+        $has_height = true;
+    }
+}
+
+// форсированная высота 100% для элементов в контейнере:
+$force_height = (
+        ($flex_direction === 'row' && $align_items === 'stretch') ||
+        ($flex_direction === 'column' && $justify_content === 'stretch')
+    ) && preg_match('/^\.tpl-(?:body|container)/', $selector);
+if ($force_height) {
+    $rules["$item_selector > .tpl-block-list"][] = "height: 100%";
+    $rules["$item_selector > .tpl-block-list > *:not(.resize-sensor):not([class^='nc-']):not(.tpl-anchor)"][] = "height: 100%";
+}
+
+// собираем и отдаём
+$css = '';
+foreach ($rules as $selector => $properties) {
+    if ($properties) {
+        $css .= "$selector {\n" . join(";\n", $properties) . ";\n}\n";
+    }
+}
+
+return $css;

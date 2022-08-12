@@ -1,0 +1,24 @@
+<?php if ($menu_level == 1): ?><?= $f_AdminCommon; ?><?php endif; ?>
+<?php
+if ($menu_is_custom && $res) {
+    // данные о разделах уже загружены — передадим их в $nc_core->subdivision,
+    // чтобы не делать дополнительных запросов при обращении к $nc_core->subdivision->get_by_id()
+    $nc_core->subdivision->set_data($res);
+}
+
+if ($admin_mode) {
+    $current_subdivision_path = $_SERVER['REQUEST_URI'];
+} else if ($nc_core->page->get_routing_result('action') === 'index' && count($_GET) < (isset($_GET['REQUEST_URI']) ? 2 : 1)) {
+    $current_subdivision_path = (string)nc_folder_path($nc_core->page->get_routing_result('folder_id'));
+} else {
+    $current_subdivision_path = false;
+}
+
+?>
+
+<?php if ($totRows): ?>
+    <ul class="<?= $cc_settings['show_bullets'] ? '' : 'no-bullet'; ?>">
+<?php else: ?>
+    <?php if ($admin_mode): ?>Нет подразделов<?php endif; ?>
+    <!-- EMPTY SUBMENU -->
+<?php endif; ?>

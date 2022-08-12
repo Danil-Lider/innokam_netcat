@@ -1,0 +1,35 @@
+<?php
+
+/** @var string $selector */
+/** @var array $settings */
+
+/**
+ * @param string|null $side
+ * @return string
+ */
+$generate_border_css = function($side = null) use($selector, $settings) {
+    if (!$side) {
+        $property = 'border';
+        $side = 'top';
+    } else {
+        $property = 'border-' . $side;
+    }
+    if (!$settings["border_{$side}_width"]) {
+        return '';
+    }
+    return "$selector { $property: " .
+            $settings["border_{$side}_width"] . "px " .
+            $settings["border_{$side}_style"] . " " .
+            $settings["border_{$side}_color"] . "; } \n";
+};
+
+if ($settings['lock_sides']) {
+    $css = $generate_border_css();
+} else {
+    $css = '';
+    foreach (array('top', 'right', 'bottom', 'left') as $side) {
+        $css .= $generate_border_css($side);
+    }
+}
+
+return $css;

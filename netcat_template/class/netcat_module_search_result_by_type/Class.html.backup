@@ -1,0 +1,100 @@
+<!-- FormPrefix -->
+
+<?= $f_AdminCommon; ?>
+
+<form action="" method="get" class="cart-stage-subscribe cart-subscribe">
+    <label class="cart-subscribe-label">
+        <input type="text" class="input input--cart input--typeOne search-input" placeholder="Найти ..." name="query" value="<?= $search; ?>"><!--
+        --><button class="search-button button button--primary button--typeTwo">Поиск</button>
+    </label>
+</form>
+
+<div class="search-divider"></div>
+
+<div class="search-header">
+
+    <? if ($search) { ?>
+
+        <? if ($goods) { ?>
+
+            Результаты по запросу «<?= $search; ?>».
+
+        <? } else { ?>
+
+            По запросу «<?= $search; ?>» ничего не найдено.
+
+        <? } ?>
+
+    <? } else { ?>
+
+        Введите поисковый запрос. Например, ваза.
+
+    <? } ?>
+
+</div>
+
+<br>
+
+<? if ($goods) { ?>
+
+    <div class="cart-stage-top flex-container">
+        <div class="cart-page-table">
+            <div class="cart-page-header">
+                <div class="cart-page-column cart-page-column--title">
+                    <div class="cart-stage-label">Товар </div>
+                </div>
+                <div class="cart-page-column cart-page-column--price">
+                    <div class="cart-stage-label">Цена </div>
+                </div>
+                <div class="cart-page-column cart-page-column--price">
+                    <div class="cart-stage-label"></div>
+                </div>
+            </div>
+
+            <? foreach ($goods as $good) {
+                $item_parent_id = $good['Parent_Message_ID'] ?: $good['Message_ID'];
+                $item_in_stock = $good['StockUnits'] > 0; ?>
+
+                <form method="post" action="" class="cart-page-row js-cart-item">
+                    <input type="hidden" name="cart_mode" value="add"/>
+                    <input type="hidden" name="items[]" value="<?= $good['Class_ID'] . ':' . $item_parent_id; ?>"/>
+                    <input type="hidden" name="class_id" value="<?= $good['Class_ID']; ?>">
+                    <input type="hidden" name="item_id" value="<?= $item_parent_id; ?>">
+                    <input type="hidden" name="qty" value="1">
+
+                    <div class="cart-page-column cart-page-column--title">
+                        <a href="<?= $good['URL']; ?>" class="cart-page-image" style="background-image:url(<?= $good['Image']; ?>);"></a>
+                        <div class="cart-page-info">
+                            <a href="<?= $good['URL']; ?>" class="cart-page-name"><?= $good['FullName']; ?></a>
+                            <div class="cart-page-desc"><?= $good['Type']; ?></div>
+                        </div>
+                    </div>
+                    <div class="cart-page-column cart-page-column--price">
+                        <div class="cart-page-price"><?= $good['ItemPriceF']; ?></div>
+                    </div>
+                    <div class="cart-page-column cart-page-column--price">
+                        <div class="cart-page-price">
+                            <div class="button button-cart <?= !$item_in_stock ? 'button-disabled' : null; ?>"
+                                 onclick="<?= $item_in_stock ? 'nc_netshop_cart(this);return false;' : null; ?>">
+                                В корзину
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            <? } ?>
+
+        </div>
+    </div>
+
+<? } ?>
+
+<!-- /FormPrefix -->
+
+<!-- RecordTemplate -->
+
+<!-- /RecordTemplate -->
+
+<!-- FormSuffix -->
+
+<!-- /FormSuffix -->

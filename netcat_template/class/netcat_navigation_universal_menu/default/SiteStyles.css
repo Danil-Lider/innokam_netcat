@@ -1,0 +1,76 @@
+ul {
+    margin: 0;
+}
+
+ul.no-bullet {
+    padding-left: 0;
+}
+
+ul.no-bullet > li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: var(--tpl-color-foreground-main);
+}
+.menu-item-active>span, .menu-item-active>a {
+    color: var(--tpl-color-brand);
+}
+
+.menu-item-layout-nameiconvertical {
+    display: flex;
+    align-self: stretch;
+    flex-direction: row;
+    justify-content: stretch;
+    justify-items: stretch;
+    align-items: stretch;
+}
+
+.menu-item-layout-nameiconvertical a {
+    width: 100%;
+    display: flex;
+    align-self: stretch;
+    justify-self: stretch;
+    flex-direction: column;
+    /*justify-content: flex-start;*/
+    /*align-items: center;*/
+}
+
+.menu-item-layout-nameiconvertical img, .menu-item-layout-nameiconvertical svg, .menu-item-layout-nameiconvertical .menu-item-icon {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    /*margin-top: auto;*/
+    /*margin-bottom: auto;*/
+}
+.menu-item-layout-nameiconvertical .icon {position: relative; width:100%; overflow:hidden;}
+.menu-item-layout-nameiconvertical .icon:before {content: "";display: block; padding-bottom: 100%;}
+.menu-item-layout-nameiconvertical .icon > * {
+    position: absolute; /* Take your picture out of the flow */
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0; /* Make the picture taking the size of it's parent */
+    width: 100%; /* This if for the object-fit */
+    height: 100%; /* This if for the object-fit */
+    object-fit: cover; /* Equivalent of the background-size: cover; of a background-image */
+    object-position: center;
+}
+.menu-item-layout-nameiconvertical span {
+    margin-bottom: 0;
+}
+
+.menu-item-icon {
+    fill: var(--tpl-color-accent);
+}
+
+img, .menu-item-icon {
+    height: 1rem;
+    width: 1rem;
+}
+
+.menu-submenu .nc-infoblock-insert {
+    display: none;
+}

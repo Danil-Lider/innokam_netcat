@@ -1,0 +1,28 @@
+<!-- FormPrefix --><!-- /FormPrefix -->
+
+<!-- RecordTemplate --><? if ($inside_admin): ?>
+<div class="tpl-block-banner">
+  <?= $f_AdminButtons; ?>
+  <p><img src="<?= $f_Image ?>" height="200"></p>
+  <p><?= $f_Text ?></p>
+</div>
+<? else: ?>
+<?php
+$analytics = '';
+if (nc_module_check_by_keyword('stats')) {
+    $analytics = nc_stats_analytics::get_promo_attribute(array(
+        'name' => 'Малый баннер',
+        'creative_name' => strip_tags($f_Text),
+        'creative_slot' => $f_RowNum + 1,
+    ));
+}
+?>
+<div class="tpl-block-banner" style="background-image: url(<?= $f_Image ?>)"<?= $analytics ?>>
+  <div class="tpl-block-admin"><?= $f_AdminButtons; ?></div>
+  <a href="<?= $f_Link ?>">
+    <div class="tpl-block-banner-text"><?= $f_Text ?></div>
+  </a>
+</div>
+<? endif; ?><!-- /RecordTemplate -->
+
+<!-- FormSuffix --><!-- /FormSuffix -->

@@ -1,0 +1,14 @@
+<div class="object-full">
+    <h1><?= nc_edit_inline('Name', $message, $cc_env['Sub_Class_ID']); ?></h1>
+    <?php if ($f_Description): ?>
+        <div class="tpl-text-header3"><p><i><?= nc_edit_inline('Description', $message, $cc_env['Sub_Class_ID']); ?></i></p></div>
+    <?php endif; ?>
+    <?= $f_AdminButtons; ?>
+    <div class="full-image size-<?=$cc_settings["objectSize"]; ?>">
+        <div class="image"><?= $f_Image->resize(1200, 740, nc_ImageTransform::RESIZE_TO_BEST_FIT)->as_img(array('class' => 'news-img')); ?></div>
+    </div>
+    <div class="object-text"><?= nc_edit_inline('Text', $message, $cc_env['Sub_Class_ID']); ?></div>
+    <?php if ($f_Author): ?>
+        <div class="object-author tpl-color-brand tpl-text-header6"><?= nc_edit_inline('Author', $message, $cc_env['Sub_Class_ID']); ?></div>
+    <?php endif; ?>
+</div>

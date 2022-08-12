@@ -1,0 +1,28 @@
+<?= $f_AdminCommon; ?>
+<div class="dropdown-button">
+    <?php if (empty($cc_settings['icon']) && empty($cc_settings['text'])): ?>
+        <span class="dropdown-button-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"
+            width="<?= nc_array_value($cc_settings, 'icon_max_width', 24) ?>"
+            height="<?= nc_array_value($cc_settings, 'icon_max_width', 24) ?>">
+                <path d="M6 36h36v-4H6v4zm0-10h36v-4H6v4zm0-14v4h36v-4H6z" />
+            </svg>
+        </span>
+    <?php endif; ?>
+    <?php if (!empty($cc_settings['icon'])): ?>
+        <span class="dropdown-button-icon">
+            <?= $cc_settings['icon']->as_img(array(
+                'title' => $cc_settings['icon_title'],
+                'style' => 'max-width: ' . nc_array_value($cc_settings, 'icon_max_width', 24) . 'px; ' .
+                           'max-height: ' . nc_array_value($cc_settings, 'icon_max_height', 24) . 'px',
+            )); ?>
+        </span>
+    <?php endif; ?>
+    <?php if (!empty($cc_settings['text'])): ?>
+        <span class="dropdown-button-text tpl-text-default"><?= $cc_settings['text'] ?></span>
+    <?php endif; ?>
+</div>
+<?php // блок будет перемещён в body, поэтому стили вшиты атрибутом: ?>
+<div class="dropdown-menu" style="display: none; position: absolute; background: var(--tpl-color-background-main, #FFF); z-index: 2000">
+    <?= nc_area('netcat_block_hidden_layer_' . $cc); ?>
+</div>

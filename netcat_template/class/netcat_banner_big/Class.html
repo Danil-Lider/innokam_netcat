@@ -1,0 +1,38 @@
+<!-- FormPrefix --><div class="tpl-block-hero">
+    <div class="tpl-layout-page-center">
+        <div class="tpl-block-prevnext">
+            <div class="tpl-link-prev"></div>
+            <div class="tpl-link-next"></div>
+        </div>
+        <div class="tpl-block-admin-common"><?= $f_AdminCommon; ?></div>
+    </div>
+    <div class="tpl-block-hero-slider">
+<!-- /FormPrefix -->
+
+<!-- RecordTemplate --><?php
+$analytics = '';
+if (nc_module_check_by_keyword('stats')) {
+    $analytics = nc_stats_analytics::get_promo_attribute(array(
+        'name' => 'Большой баннер',
+        'creative_name' => strip_tags($f_Text),
+        'creative_slot' => $f_RowNum + 1,
+    ));
+}
+?><div class="tpl-block-hero-item"<?= $analytics ?>>
+    <div class="tpl-block-admin"><?= $f_AdminButtons; ?></div>        
+    <a href="<?= $f_Link ?>">
+		<div class="s-circle"></div>
+        <div class="s-product"><img src="<?= $f_Image ?>" alt="" <? if ($inside_admin): ?>height="200"<? endif; ?>></div>
+        <div class="s-info">
+            <div class="s-cost">
+                <?= $f_Price ?>
+                <?= (!preg_match("/[^\d\s]/", $f_Price) ? '₽' : '') ?>
+                <div class="s-title"><?= $f_Text ?></div>
+            </div>
+        </div>        
+    </a>
+</div><!-- /RecordTemplate -->
+
+<!-- FormSuffix -->    </div>
+</div>
+<!-- /FormSuffix -->

@@ -1,0 +1,26 @@
+<?php
+
+/* @var nc_search_ui $nc_search */
+global $nc_search;
+
+if (!nc_module_check_by_keyword('netshop')) {
+    die (NETCAT_MODULE_NETSHOP_MODULEUNCHECKED);
+}
+
+$nc_core = nc_core::get_object();
+$nc_db = $nc_core->db;
+$nc_netshop = nc_netshop::get_instance();
+
+$search_query = $search_query ? $search_query : $nc_core->input->fetch_post_get('search_query');
+$search_query = str_replace(array("(",')'), '', $search_query);
+$search_query = $nc_db->escape($search_query);
+$search_query = nc_search_util::convert($search_query, true);
+$search_query = $nc_search->make_query_string($search_query);
+
+$subdivisions_data = array();
+
+if ($search_query) {
+    $nc_data = $nc_search->get_results("subdivision_name:($search_query) page_type:'goods index'", "site$catalogue");
+}
+
+$goods_components_ids = $nc_netshop->get_goods_components_ids();
