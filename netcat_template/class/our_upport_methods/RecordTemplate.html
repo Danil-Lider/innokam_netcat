@@ -1,0 +1,12 @@
+<?/* Служебная часть */for ($f_RowNum = 0; $f_RowNum < $rowCount; $f_RowNum++) {    if($fetch_row[$f_RowNum] instanceof Iterator) {        extract($fetch_row[$f_RowNum]->to_array(), EXTR_PREFIX_ALL, "f");    } else {        extract($fetch_row[$f_RowNum], EXTR_PREFIX_ALL, "f");    }    foreach($iteration_RecordTemplate[$f_RowNum] as $value) {        extract($value);    }    eval($cc_env["convert2txt"]);    ob_start();/* Конец служебной части */?>
+<?= $f_AdminButtons; ?>
+<div class="support__item anim6">
+  <div  style="background-image: url(<?=$f_image ?>)" class="support__item-head">
+    <div class="head title"><?=$f_title1 ?></div>
+    <div class="head-num"><?=$f_num ?></div>
+  </div>
+  <ul class="supptort_item-inner aos-init aos-animate" data-aos="fade-up">
+       <?=$f_links ?>
+  </ul>
+</div>
+<?/* Служебная часть */    echo nc_finishing_RecordTemplate(ob_get_clean(), $inside_admin, $classID, $f_RowID, $parent_message, $cc, $cc_env["Class_Name"], $no_cache_marks);}/* Конец служебной части */?>

@@ -1,0 +1,27 @@
+<!-- FormPrefix --><?= $f_AdminCommon; ?>
+<section class="news">
+  <div class="container">
+    <div class="headers-titles" style="padding-top:80px">
+      <div class="title">Новости</div>
+    </div>
+    <div class="wrapper">
+               <!-- /FormPrefix -->
+
+<!-- RecordTemplate --><?= $f_AdminButtons; ?>
+ <div class="news-item">
+   <div class="news-left">
+     <div class="news-date">
+       <div class="date-head">0<?= $f_Message_ID?></div>
+       <div class="date"><?= $f_date ?></div>
+     </div>
+     <a class="detail-link" href="#">читать</a>
+   </div>
+   <div class="news-right">
+     <div class="news-title"><?= $f_title1 ?></div>
+     <div class="text"><?= $f_preview_text ?></div>
+   </div>
+</div><!-- /RecordTemplate -->
+
+<!-- FormSuffix --></div>
+</div>
+</section><!-- /FormSuffix -->
